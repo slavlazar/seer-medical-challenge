@@ -4,8 +4,9 @@ const fs = require('fs')
 
 const app = express()
 app.use(cors()) // so that app can access
+app.use(express.json());
 
-const bookings = JSON.parse(fs.readFileSync('./server/bookings.json')).map(
+let bookings = JSON.parse(fs.readFileSync('./server/bookings.json')).map(
   (bookingRecord) => ({
     time: Date.parse(bookingRecord.time),
     duration: bookingRecord.duration * 60 * 1000, // mins into ms
@@ -15,6 +16,12 @@ const bookings = JSON.parse(fs.readFileSync('./server/bookings.json')).map(
 
 app.get('/bookings', (_, res) => {
   res.json(bookings)
-})
+});
+
+app.post('/bookings', (req, res) => {
+  bookings = [...bookings, ...req.body];
+
+  res.sendStatus(200);
+});
 
 app.listen(3001)

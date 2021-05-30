@@ -25,7 +25,7 @@ const Dropzone = ({ onUploadedFiles, ...params }) => {
         <DropboxInputContainer>
           <input id="dropbox" {...getInputProps()} />
           <DropboxSpan>Drag files here to upload, or</DropboxSpan>
-          <DropboxLabel htmlFor="dropbox">browse for files</DropboxLabel>
+          <DropboxLabel>browse for files</DropboxLabel>
           {errors.length > 0 && <p>Error!</p>}
           {loading && <p>Loading...</p>}
         </DropboxInputContainer>

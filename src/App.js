@@ -1,52 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import Dropzone from 'react-dropzone'
-import './App.css'
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
 
-const apiUrl = 'http://localhost:3001'
+import Provider from './context/Provider';
+import Home from './modules/Main';
+import theme from './theme';
 
-export const App = () => {
-  const [bookings, setBookings] = useState([])
-
-  useEffect(() => {
-    fetch(`${apiUrl}/bookings`)
-      .then((response) => response.json())
-      .then(setBookings)
-  }, [])
-
-  const onDrop = (files) => {
-    console.log(files)
-  }
-
-  return (
-    <div className='App'>
-      <div className='App-header'>
-        <Dropzone accept='.csv' onDrop={onDrop}>
-        {({getRootProps, getInputProps}) => (
-          <section>
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <p>Drop some files here, or click to select files</p>
-            </div>
-          </section>
-        )}
-        </Dropzone>
-      </div>
-      <div className='App-main'>
-        <p>Existing bookings:</p>
-        {bookings.map((booking, i) => {
-          const date = new Date(booking.time)
-          const duration = booking.duration / (60 * 1000)
-          return (
-            <p key={i} className='App-booking'>
-              <span className='App-booking-time'>{date.toString()}</span>
-              <span className='App-booking-duration'>
-                {duration.toFixed(1)}
-              </span>
-              <span className='App-booking-user'>{booking.userId}</span>
-            </p>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
+export const App = () => (
+  <Provider>
+    <ThemeProvider theme={theme}>
+      <Home />
+    </ThemeProvider>
+  </Provider>
+);
